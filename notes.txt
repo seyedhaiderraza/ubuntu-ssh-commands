@@ -1,0 +1,93 @@
+ubuntu terminal commands:
+mkdir
+rmdir
+rmdircp
+touch
+cat,
+echo
+uptime
+vim
+ps
+ifconfig
+ip a
+...................................
+SSH
+SSH - client
+SSHD - software on server to connect via client SSH
+
+how to SSH?
+ssh username@ipaddress
+using
+    -password
+    -public/private key pair
+generating SSH keys
+....................................
+1. ssh username@ipaddress
+ipaddress -> inet address found on ubuntu machine using $ ip -address
+    -need to install ssh on ubuntu    <- sudo apt install ssh
+Now
+ssh user@ip    <- asks for user password and logs inet
+
+2. we can use ssh rsa public pivate keys    <- public key paste in ubuntu ssh/authorized_keys
+$ssh-keygen
+...
+cat ~/.ssh/id_rsa.pub
+we get public key
+
+3. copy public key to ubuntu server for user
+cat ~/.ssh/id_rsa.pub | ssh haiderraza@192.168.109.128 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys"
+-gets public key-ssh into machine
+-mkdir with parent in home ~ with dir .ssh 
+- changes priviledges of ssh folder to 700
+- cat >> paste all content in authorized_keys file
+
+4. now we can login into the machine using ssh WITHOUT entering password each time
+.............................
+copy local system file to remote:
+scp filetomove.txt haiderraza@192.168.109.128:~
+copies to home
+
+............................
+adding user:
+ssh user@ip
+$sudo adduser new-user
+enter password
+DONE!
+now
+ssh new-user@ip
+enter password    <-each time
+repeat ssh-keygen steps for this user for no repeat asking for passwords
+after login -> $pwd 
+            /home/newhaider
+no .ssh folder right?
+so 
+-mkdir .ssh
+-cd .ssh
+-touch authorized_keys
+paste the public key from your local home/Users/user/.ssh/d_rsa.pub file here
+thats it DONE
+next time login without a password
+........................................
+cloning github repo within remote machine using ssh:
+1. ssh newuser@ip
+2. pwd
+/home/new-user
+3. cd .ssh
+4. ssh-keygen
+5. enter file name : id_github_rsa
+6. mkdir git-repo
+7. cat .ssh/id_github_rsa.pub
+copy whole key and goto github>user>settings>add new ssh public key>paste and save
+8. cd ..
+9. cd git-repo
+CLONED!
+if not :
+add following steps:
+- ssh-add /home/newu-user/.ssh/id_github_rsa
+if this doesn't works do following
+- eval `ssh-agent -s`
+then run again
+- ssh-add /home/newu-user/.ssh/id_github_rsa
+and now do git clone it will work
+
+

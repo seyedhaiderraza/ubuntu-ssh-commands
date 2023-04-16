@@ -1,0 +1,3 @@
+in order for VMware workstation to run we need to disable hypervisor vm on windows:
+using cmd:
+bcdedit /set hypervisorlaunchtype off
